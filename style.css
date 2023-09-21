@@ -1,1 +1,79 @@
 
+*{
+    margin: 0;
+    padding:  0;
+    font-family: sans-serif;
+}
+  .navigate .hed {
+    /* margin: auto 9.7rem; */
+    background-color: lightgray;
+    padding: 1.2rem;
+     margin-bottom: 2rem;
+    text-transform: capitalize;
+     border-style: solid;
+     font-weight : bolder;
+  
+  }
+  .menu-start {
+    margin: auto 1.2rem;
+
+  }
+  .menu {
+    background-color: lightgrey;
+
+  }
+  .menu-taggle {
+    padding-top: 12px;
+    text-align: center;
+  }
+   .menu h2.ch{
+    text-align: center;
+    /* background-color: aqua; */
+  }
+
+  .Chicken,h2 {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 0.5rem;
+
+  }
+ p.lor{
+  margin: 0rem 0rem;
+  /* background-color: black; */
+  padding: 0.1rem 1rem;
+ } 
+ .navbar-collapse{
+  transition: all 5s;
+  text-align: center;
+  background-color: white;
+  /* border: solid; */
+  padding-top: -9000000000px;
+ }
+
+ .nav-item a{
+  color: black;
+  font-size:x-large;
+  font-weight: 400;
+ }
+ /* .container-fluid{
+  border: solid;
+ 
+ } */
+ .container-fluid a.navbar-brand{
+  /* background-color: lightgray; */
+  padding: 1.2rem;
+   /* margin-bottom: 2rem; */
+  text-transform: capitalize;
+   /* border-style: solid; */
+   font-weight : bolder;
+   font-size: xx-large;
+ }
+ .navbar{
+  background-color:  lightgray;
+  border: solid;
+  /* border-radius: 2px; */
+ }
+hr.md{
+  border-top: 10px solid black;
+  margin: -10px;
+}
