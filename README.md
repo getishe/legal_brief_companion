@@ -8,7 +8,6 @@ https://copilot.microsoft.com/shares/mV4tJB6LsEi8Z9tVbFC9J
 Hello there I, developing a UI that uses user prompts to interact with an LLM using Gradio or Streamlit in the matter of time
 
 case
-
 https://www.courtlistener.com/opinion/10385464/sheridan-quashawn-v-state-criminal/?q=criminal+
 
 "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
