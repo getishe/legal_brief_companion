@@ -6,7 +6,7 @@ https://copilot.microsoft.com/shares/tpNA3AuFGyyJzT2nwTh3m
 https://copilot.microsoft.com/shares/mV4tJB6LsEi8Z9tVbFC9J
 
 Hello there I, developing a UI that uses user prompts to interact with an LLM using Gradio or Streamlit in the matter of time
-
+https://www.youtube.com/watch?v=yF9kGESAi3M&t=6571s
 case
 https://www.courtlistener.com/opinion/10385464/sheridan-quashawn-v-state-criminal/?q=criminal+
 
