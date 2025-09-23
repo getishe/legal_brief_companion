@@ -1,0 +1,7 @@
+langchain
+faiss-cpu
+chromadb
+python-dotenv
+numpy
+pandas
+requests
