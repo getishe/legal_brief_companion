@@ -1,31 +1,20 @@
 from dotenv import load_dotenv
-from logchain_Groq import ChatGroq
-
+from langchain_groq import ChatGroq
 
 # Load environment variables from .env file
 load_dotenv()
 
 # Initialize the ChatGroq
-llm = ChatGroq(
-    model="mixtral-8x7b-32768",
+llm = ChatGroq(model="llama-3.1-8b-instant",
     temperature=0.0,
     max_retries=2,
+    # other params...
     )
 
-result = llm.chat("What is the capital of France?")
+result = llm.invoke("What is the capital of France?")
 print(result)
 print("-----")
-print(result.completion)
-
-
-
-
-
-
-
-
-
-
+print(result.content)
 
 # from ingestion.document_loader import DocumentLoader
 # from ingestion.text_splitter import TextSplitter
