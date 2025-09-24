@@ -1,7 +1,6 @@
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
-
 # Load environment variables from .env file
 load_dotenv()
 
@@ -16,16 +15,6 @@ result = llm.invoke("What is the capital of France?")
 print(result)
 print("-----")
 print(result.content)
-
-
-
-
-
-
-
-
-
-
 
 # from ingestion.document_loader import DocumentLoader
 # from ingestion.text_splitter import TextSplitter
