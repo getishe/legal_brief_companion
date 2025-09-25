@@ -67,3 +67,19 @@ After running the application, you can interact with the assistant through the c
 - **User Interface**: Simple CLI for user interaction.
 
 Feel free to explore the code and modify it to suit your needs!
+
+"& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+
+power shell
+
+https://copilot.microsoft.com/shares/QERQyvTyiG3sZ654RACGW
+
+https://copilot.microsoft.com/shares/W2VehnXKzxn4urnFdubQC
+
+https://copilot.microsoft.com/shares/FPkRs3BoRB895WGwCFAKn
+
+https://copilot.microsoft.com/shares/A3xiSVePWTzHHoddNLRbU
+
+Project
+https://copilot.microsoft.com/shares/hqmWtuCsx6v4MrtBEYuNR
+https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
