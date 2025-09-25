@@ -30,17 +30,20 @@ rag-assistant
 ├── requirements.txt             # Python dependencies for the project
 ├── .env                         # Environment variables for configuration
 └── README.md                    # Documentation for the project
+
 ```
 
 ## Setup Instructions
 
 1. Clone the repository:
+
    ```
    git clone <repository-url>
    cd rag-assistant
    ```
 
 2. Install the required dependencies:
+
    ```
    pip install -r requirements.txt
    ```
