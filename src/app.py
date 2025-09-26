@@ -1,27 +1,40 @@
-from dotenv import load_dotenv
-from langchain_groq import ChatGroq
+# from dotenv import load_dotenv
+# from langchain_groq import ChatGroq
 
-# Load environment variables from .env file
-load_dotenv()
+# # Load environment variables from .env file
+# load_dotenv()
 
-# Initialize the ChatGroq
-llm = ChatGroq(model="llama-3.1-8b-instant",
-    temperature=0.0,
-    max_retries=2,
-    # other params...
-    )
+# # Initialize the ChatGroq
+# llm = ChatGroq(model="llama-3.1-8b-instant",
+#     temperature=0.0,
+#     max_retries=2,
+#     # other params...
+#     )
 
-result = llm.invoke("What is the capital of France?")
-print(result)
-print("-----")
-print(result.content)
+# result = llm.invoke("What is the capital of France?")
+# print(result)
+# print("-----")
+# print(result.content)
 
-# from ingestion.document_loader import DocumentLoader
+from ingestion.document_loader import load_documents
+from ingestion.text_splitter import split_documents
 # from ingestion.text_splitter import TextSplitter
 # from retrieval.vector_store import VectorStore
 # from retrieval.retriever import Retriever
 # from llm.chain import LLMChain
 # from interface.cli import run_cli
+
+
+def main():
+    # Load and process documents
+    documents = load_documents()
+    chunks = split_documents(documents)
+    print(f"Loaded {len(documents)} documents and split into {len(chunks)} chunks.")
+    print("Sample chunk:", chunks[0].page_content if chunks else "No chunks available")
+    print(f"split into {len(chunks)} chunks.")
+
+    if __name__ == "__main__":
+        main()  
 
 # def main():
 #     # Initialize components
