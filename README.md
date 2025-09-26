@@ -83,3 +83,10 @@ https://copilot.microsoft.com/shares/A3xiSVePWTzHHoddNLRbU
 Project
 https://copilot.microsoft.com/shares/hqmWtuCsx6v4MrtBEYuNR
 https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
+https://pwskills.com/blog/how-to-develop-an-effective-ai-legal-assistant/
+
+https://copilot.microsoft.com/chats/REFhrMCUgFWzyxo5kPf7y
+
+https://copilot.microsoft.com/chats/bdEHjKkpzhKQ4oZyD4QgQ
+
+https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
