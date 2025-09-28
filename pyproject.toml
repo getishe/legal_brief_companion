@@ -20,6 +20,7 @@ groq = "^0.1.0"  # Replace with actual version if available
 pypdf = "^3.17.0"
 python-dotenv = "^1.0.0"
 pydantic = "^2.11.9"
+pydantic-settings = "^2.11.9"
 
 
 [build-system]
