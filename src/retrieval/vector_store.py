@@ -1,22 +1,18 @@
-class VectorStore:
-    def __init__(self, store_type='faiss'):
-        self.store_type = store_type
-        self.embeddings = []
-        self.documents = []
+from langchain.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings
+from config.settings import settings
 
-    def add_document(self, document, embedding):
-        self.documents.append(document)
-        self.embeddings.append(embedding)
 
-    def retrieve(self, query_embedding, top_k=5):
-        # Placeholder for retrieval logic
-        # This should interact with the vector store to fetch the top_k relevant documents
-        pass
-
-    def save(self, path):
-        # Placeholder for saving the vector store to a file
-        pass
-
-    def load(self, path):
-        # Placeholder for loading the vector store from a file
-        pass
+def build_vector_store(documents):
+    """Builds a Chroma vector store from the provided documents."""
+    embeddings = OpenAIEmbeddings(model=settings.EMBEDDING_MODEL)
+    
+    vector_store = Chroma.from_documents(
+        documents,
+        embeddings=embeddings,
+        persist_directory=str(settings.VECTOR_STORE_PATH)
+    )
+    if vector_store.persist():
+        print(f"Vector store persisted at {settings.VECTOR_STORE_PATH}.")
+    print(f"Vector store created at {len(documents)} documents.")
+    return vector_store
