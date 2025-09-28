@@ -1,5 +1,5 @@
 from pathlib import Path
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings  
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     GROQ_API_KEY: str
     EMBEDDING_MODEL: str = "text-embedding-3-small"
     LLM_MODEL: str = "gpt-3.5-turbo"
-
+    debug: bool = False
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
