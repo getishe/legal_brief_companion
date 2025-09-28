@@ -1,14 +1,34 @@
-import os 
-from langchain.document_loaders import TextLoader
-from langchain.document_loaders import PyPDFLoader
-from config.settings import DOCUMENT_DIR
+from pathlib import Path
+from langchain_community.document_loaders import TextLoader, PyPDFLoader
+from config.settings import settings
 
 def load_documents():
     documents = []
-    for filename in os.listdir(DOCUMENT_DIR):
-        if filename.endswith('.txt') or filename.endswith('.pdf'):
-            loader = TextLoader(os.path.join(DOCUMENT_DIR, filename), encoding='utf-8')
-            documents.extend(loader.load())
+    doc_path = settings.DOCUMENT_DIR
+    
+    # If it's a directory, iterate through files
+    if doc_path.is_dir():
+        for file in doc_path.iterdir():
+            if file.suffix == '.txt':
+                loader = TextLoader(str(file), encoding='utf-8')
+                documents.extend(loader.load())
+            elif file.suffix == '.pdf':
+                loader = PyPDFLoader(str(file))
+                documents.extend(loader.load())
+            
+                # Skip unsupported file types in directory   
+            elif doc_path.is_file():
+                if doc_path.suffix == ".txt":
+                        loader = TextLoader(str(doc_path), encoding="utf-8")
+                        documents.extend(loader.load())
+            elif doc_path.suffix == ".pdf":
+                  loader = PyPDFLoader(str(doc_path))
+                  documents.extend(loader.load())
+        else:
+            raise ValueError("Unsupported file type. Only .txt and .pdf are supported.")
+    else:
+        raise ValueError(f"DOCUMENT_DIR must be a valid file or directory path.")
+    print(f"Loaded {len(documents)} documents from {doc_path}")
     return documents
 
 
