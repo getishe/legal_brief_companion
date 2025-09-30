@@ -23,3 +23,5 @@ def build_chain(query_type: str, chain_type: str= "stuff"):
     print(f"🔗 Chain built with model: {llm.model}, prompt type: {query_type}")
       
     return chain
+# poetry run python src/interface/cli.py ingest
+# poetry run python src/interface/cli.py query "What is the precedent in Tinker v. Des Moines?" --query-type question
