@@ -1,13 +1,14 @@
+import os
 from pathlib import Path
 from pydantic_settings import BaseSettings
-
+from langchain_community.embeddings import HuggingFaceEmbeddings
 class Settings(BaseSettings):
     # Required by your app
-    GROQ_API_KEY: str
-    EMBEDDING_MODEL: str = "text-embedding-3-small"
-    LLM_MODEL: str = "gpt-3.5-turbo"
-    DATABASE_URL: str = "sqlite:///data/knowledge_base.db"
-
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
+    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq")  # or "openai", "anthropic"
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/knowledge_base.db")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "llama3-8b-8192")
     # Match .env fields to avoid extra_forbidden errors
     API_KEY: str = ""
     MODEL_NAME: str = ""
@@ -26,6 +27,10 @@ class Settings(BaseSettings):
     @property
     def VECTOR_STORE_PATH(self) -> Path:
         return Path("data/vector_store")
+    
+    def get_embedding_model(self):
+         return HuggingFaceEmbeddings(model_name=self.EMBEDDING_MODEL)
+
 
     debug: bool = False
 
