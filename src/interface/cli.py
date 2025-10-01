@@ -24,6 +24,37 @@ def ingest():
         raise  # Optional: re-raise to preserve traceback
 
     print("📚 Ingestion complete.")
+@app.command()
+def reset():
+    """
+    Delete the existing vector store to start fresh.
+    """
+    import shutil
+    from config import settings  # Adjust if your settings are elsewhere
+
+    try:
+        shutil.rmtree(settings.VECTOR_STORE_PATH, ignore_errors=True)
+        print(f"🧹 Vector store at '{settings.VECTOR_STORE_PATH}' has been reset.")
+    except Exception as e:
+        print(f"❌ Failed to reset vector store: {type(e).__name__} - {e}")
+        
+@app.command()
+def status():
+    """
+    Show current vector store status.
+    """
+    from pathlib import Path
+    from config import settings  # Adjust if needed
+
+    vector_path = Path(settings.VECTOR_STORE_PATH)
+    if not vector_path.exists():
+        print("📦 No vector store found.")
+        return
+
+    index_path = vector_path / "index"
+    chunk_files = list(index_path.glob("*.bin"))
+    print(f"📍 Vector store path: {vector_path}")
+    print(f"📄 Chunk count: {len(chunk_files)}")
 
 @app.command()
 def query(query: str, query_type: str = "default"):
