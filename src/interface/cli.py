@@ -1,9 +1,11 @@
+import json
 import typer
 from ingestion.document_loader import load_documents
 from ingestion.text_splitter import split_documents 
 from retrieval.vector_store import build_vector_store
 from llm.chain import build_chain
-
+from config import settings
+from typing import Optional
 app = typer.Typer()
 
 @app.command()
@@ -57,28 +59,47 @@ def status():
     print(f"📄 Chunk count: {len(chunk_files)}")
 
 @app.command()
-def query(query: str, query_type: str = "default"):
+def query(
+    query: str,
+    query_type: str = "default",
+    fast: bool = False,
+    show_sources: bool = False,
+    max_chars: int = 300,
+    format: str = "text",
+    filter: Optional[str] = None  
+):
+    filters = None
+    if filter:
+      try:
+          filters = json.loads(filter)
+      except json.JSONDecodeError:
+          print("❌ Invalid filter format. Use JSON like: '{\"year\": 1969}'")
+          return
+
     """
     Ask a question using the RAG assistant.
+    Use --fast for quicker responses.
+    Use --show-sources to display retrieved documents.
     """
-    print(f"🔍 Query received: {query}")
-    chain = build_chain(query_type)
-    print("🔗 Chain built. Invoking...")
+    filters = {"year": 1969} if "Tinker" in query else None
 
-    result = chain.invoke(query)
-    print(f"\n🧪 Raw result:\n{result}\n")
-
-    if isinstance(result, dict):
-      if "result" in result:
-        print(f"\n🤖 Response:\n{result['result']}\n")
-        print("📄 Retrieved Documents:")
-        for i, doc in enumerate(result.get("source_documents", []), 1):
-            print(f"\n--- Document {i} ---")
-            print(doc.page_content[:500])
-      else:
-        print(f"⚠️ No 'result' key in response: {result}")
+    if fast:
+        settings.LLM_MODEL = "llama-3.1-8b-instant"
+        chain = build_chain(query_type, filters=filters, max_chunks=2)
     else:
-        print(f"⚠️ Unexpected result type: {type(result)} - {result}")
+        chain = build_chain(query_type, filters=filters)
+
+    response = chain.invoke({"query": query})
+    print(f"🤖 Response:\n{response['result']}\n")
+
+    #how sources if flag is set
+    if show_sources:
+        for i, doc in enumerate(response.get("source_documents", []), 1):
+            print(f"📄 Source {i}: {doc.metadata.get('source', 'Unknown')}")
+            print(doc.page_content[:max_chars])
+
+  # Print first 500 chars
+
 
 
 
