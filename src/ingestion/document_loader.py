@@ -1,7 +1,6 @@
 from pathlib import Path
 from langchain_community.document_loaders import TextLoader, PyPDFLoader
-from config.settings import settings
-
+from legal_brief_companion.config.settings import settings
 def load_documents():
     documents = []
     doc_path = settings.DOCUMENT_DIR
