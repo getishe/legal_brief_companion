@@ -90,3 +90,12 @@ https://copilot.microsoft.com/chats/REFhrMCUgFWzyxo5kPf7y
 https://copilot.microsoft.com/chats/bdEHjKkpzhKQ4oZyD4QgQ
 
 https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
+
+<!-- EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+LLM_PROVIDER=groq
+LLM_MODEL=llama-3.1-8b-instant
+DATABASE_URL=sqlite:///data/knowledge_base.db
+DOCUMENTS_PATH=data/documents
+PERSIST_DIRECTORY=data/vector_store -->
+ <!-- poetry run python src/legal_brief_companion/ingest.py -->
+<!-- poetry run streamlit run src/legal_brief_companion/app.py -->
