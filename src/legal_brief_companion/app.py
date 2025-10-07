@@ -27,15 +27,42 @@ if __name__ == "__main__":
     chain = build_chain(query_type, filters=filters)
 
     try:
-        response = chain.invoke({"query": query})
-        print(f"🧠 Chain response: {response}")
+      
+        chain, docs = build_chain(query_type="summary", filters=filters)
+        output = chain.invoke({"query": query})
+        response = output["result"]
+        docs = output["source_documents"]
 
-        st.markdown(f"### Response\n{response['result']}")
+        st.write("🧠 Response:", response)
         
-        if "source_documents" in response:
-            st.markdown("### 📄 Sources")
-            for doc in response["source_documents"]:
-                st.markdown(f"- {doc.metadata.get('source', 'Unknown source')}")
+        # ✅ Page-level citations
+          #  with st.expander("📄 Sources"):
+        if docs:
+            st.markdown("### 📄 Sources with Page References")
+            for doc in docs:
+                page = doc.metadata.get("page_label", doc.metadata.get("page"))
+                st.markdown(f"- `{doc.metadata['source']}`, page {page}")
+        else:
+                st.warning("No source documents found for this query.")
+         # Show unique sources used
+        if docs:
+          unique_sources = sorted(set(doc.metadata["source"] for doc in docs))
+          st.markdown("### 📄 Sources")
+          for src in unique_sources:
+             st.markdown(f"- `{src}`")
+        else:
+           st.warning("No sources found for this query.")
+
+          
+          
+               # response = chain.invoke({"query": query})
+        # print(f"🧠 Chain response: {response}")
+        # st.markdown(f"### Response\n{response['result']}")
+        
+        # if "source_documents" in response:
+        #     st.markdown("### 📄 Sources")
+        #     for doc in response["source_documents"]:
+        #         st.markdown(f"- {doc.metadata.get('source', 'Unknown source')}")
     except Exception as e:
         st.error(f"❌ Error: {str(e)}")
 
