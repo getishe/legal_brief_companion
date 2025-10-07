@@ -65,7 +65,7 @@ def build_chain(query_type: str, chain_type: str = "stuff", filters: dict = None
     )
 
     print(f"🔗 Chain built with model: {settings.LLM_MODEL}, prompt type: {query_type}")
-    return chain
+    return chain, docs
 
 # https://copilot.microsoft.com/shares/SG7eXKsW3ckeKKLeaBkog
 # https://copilot.microsoft.com/shares/tKD9UVJqLRdAKeqvmK3FZ
