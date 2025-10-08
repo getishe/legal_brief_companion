@@ -1,4 +1,4 @@
-from legal_brief_companion.llm.chain_builder import build_chain
+from legal_brief_companion.llm.chain import build_chain
 
 query = "Summarize the ruling in Tinker v. Des Moines"
 chain, docs = build_chain(query_type="student speech rights")
