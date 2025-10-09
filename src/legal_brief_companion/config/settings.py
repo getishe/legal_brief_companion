@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq")  # or "openai", "anthropic"
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/knowledge_base.db")
     LLM_MODEL: str = os.getenv("LLM_MODEL", "llama3-8b-8192")
-    # Match .env fields to avoid extra_forbidden errors
+    # Match .env fields to avoid extra_forbidden errors and optional 
     API_KEY: Optional[str] = None
     MODEL_NAME: Optional[str] = None
     VECTOR_STORE_TYPE: Optional[str] = None
