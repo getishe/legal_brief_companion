@@ -1,5 +1,5 @@
 import streamlit as st
-from src.legal_brief_companion.llm.chain import build_chain
+from legal_brief_companion.llm.chain import build_chain
 from legal_brief_companion.config.settings import settings
 
 
