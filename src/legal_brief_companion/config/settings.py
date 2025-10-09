@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 from pydantic_settings import BaseSettings
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from typing import Optional 
 class Settings(BaseSettings):
     # Required by your app
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
@@ -10,9 +11,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/knowledge_base.db")
     LLM_MODEL: str = os.getenv("LLM_MODEL", "llama3-8b-8192")
     # Match .env fields to avoid extra_forbidden errors
-    API_KEY: str = ""
-    MODEL_NAME: str = ""
-    VECTOR_STORE_TYPE: str = ""
+    API_KEY: Optional[str] = None
+    MODEL_NAME: Optional[str] = None
+    VECTOR_STORE_TYPE: Optional[str] = None
     DOCUMENTS_PATH: str = "data/documents"
     PERSIST_DIRECTORY: str = "data/vector_store"
     
