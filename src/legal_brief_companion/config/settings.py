@@ -1,26 +1,26 @@
-import os
 from pathlib import Path
 from pydantic_settings import BaseSettings
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from typing import Optional 
+from typing import Optional
+
 class Settings(BaseSettings):
-    # Required by your app
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY")
-    EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
-    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq")  # or "openai", "anthropic"
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///data/knowledge_base.db")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "llama3-8b-8192")
-    # Match .env fields to avoid extra_forbidden errors and optional 
+    GROQ_API_KEY: str
+    EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
+    LLM_PROVIDER: str = "groq"
+    DATABASE_URL: str = "sqlite:///data/knowledge_base.db"
+    LLM_MODEL: str = "llama-3.1-8b-instant"
+    
     API_KEY: Optional[str] = None
     MODEL_NAME: Optional[str] = None
     VECTOR_STORE_TYPE: Optional[str] = None
     DOCUMENTS_PATH: str = "data/documents"
     PERSIST_DIRECTORY: str = "data/vector_store"
-    
+    debug: bool = False
+
     @property
     def PERSIST_DIR(self) -> Path:
         return Path(self.PERSIST_DIRECTORY)
-    # Computed paths
+
     @property
     def DOCUMENT_DIR(self) -> Path:
         return Path(self.DOCUMENTS_PATH)
@@ -28,17 +28,13 @@ class Settings(BaseSettings):
     @property
     def VECTOR_STORE_PATH(self) -> Path:
         return Path("data/vector_store")
-    
+
     def get_embedding_model(self):
-         return HuggingFaceEmbeddings(model_name=self.EMBEDDING_MODEL)
-
-
-    debug: bool = False
+        return HuggingFaceEmbeddings(model_name=self.EMBEDDING_MODEL)
 
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-   
 
 # Instantiate settings
 settings = Settings()
