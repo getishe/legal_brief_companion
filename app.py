@@ -70,10 +70,12 @@ import streamlit as st
 from legal_brief_companion.llm.chain import build_chain
 from legal_brief_companion.config.settings import settings
 
-if settings.GROQ_API_KEY in ("demo-key", None, ""):  
+if settings.debug
+   if settings.GROQ_API_KEY in ("demo-key", None, ""):  
      st.warning("⚠️ No valid GROQ_API_KEY found. Please set it in Streamlit Secrets.")   
 else: 
-   st.success("GroQ_API_KEY loaded successfully.")        
+   st.success("GroQ_API_KEY loaded successfully.")     
+      
 def main():
     st.set_page_config(page_title="Legal Brief Companion", layout="wide")
     st.title("⚖️ Legal Brief Companion")
@@ -89,25 +91,27 @@ def main():
     max_chars = st.slider("Max response length", min_value=100, max_value=2000, value=500, step=100)
 
     if st.button("Submit"):
+        settings.LLM_MODEL = model
+        filters = None
+        chain, docs = build_chain(query_type, filters=filters)
+        
         try:
-            settings.LLM_MODEL = model
-            filters = None
-            chain, docs = build_chain(query_type=query_type, filters=filters)
-
+          with st.spinner("🤖 Thinking... Generating response..."):
             output = chain.invoke({"query": query})
             response = output["result"]
             docs = output.get("source_documents", [])
 
-            st.write("🧠 **Response:**", response)
+          st.success("✅ Response generated successfully!")
+          st.write("🧠 **Answer:**", response)
 
             # Show resources if available
-            if show_resources and docs:
+          if show_resources and docs:
                 st.markdown("### 📄 Sources with Page References")
                 for doc in docs:
                     source = doc.metadata.get("source", "Unknown")
                     page = doc.metadata.get("page_label", doc.metadata.get("page", "N/A"))
                     st.markdown(f"- `{source}`, page {page}")
-            elif show_resources:
+          elif show_resources:
                 st.warning("No source documents found for this query.")
 
         except Exception as e:
