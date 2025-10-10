@@ -70,7 +70,10 @@ import streamlit as st
 from legal_brief_companion.llm.chain import build_chain
 from legal_brief_companion.config.settings import settings
 
-
+if settings.GROQ_API_KEY in ("demo-key", None, ""):  
+     st.warning("⚠️ No valid GROQ_API_KEY found. Please set it in Streamlit Secrets.")   
+else: 
+   st.success("GroQ_API_KEY loaded successfully.")        
 def main():
     st.set_page_config(page_title="Legal Brief Companion", layout="wide")
     st.title("⚖️ Legal Brief Companion")
