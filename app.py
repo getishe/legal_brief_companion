@@ -70,7 +70,7 @@ import streamlit as st
 from legal_brief_companion.llm.chain import build_chain
 from legal_brief_companion.config.settings import settings
 
-if settings.debug
+if settings.debug:
    if settings.GROQ_API_KEY in ("demo-key", None, ""):  
      st.warning("⚠️ No valid GROQ_API_KEY found. Please set it in Streamlit Secrets.")   
 else: 
