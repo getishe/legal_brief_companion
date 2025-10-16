@@ -9,27 +9,48 @@ This project implements a simple RAG (Retrieval-Augmented Generation) powered as
 ```
 rag-assistant
 ├── src
-│   ├── app.py                  # Main entry point of the application
-│   ├── config
-│   │   └── settings.py         # Configuration settings for the application
+|   ├── interface
+│   │   └── cli.py               # Command-line interface for user interaction
 │   ├── ingestion
 │   │   ├── document_loader.py   # Handles loading documents into the application
 │   │   └── text_splitter.py     # Splits large documents into smaller chunks
+|   |─── utils
+|   │     └── helpers.py
+|  legal_brief_companion
+│   |
+|   ├── config
+│   │   └── settings.py         # Configuration settings for the application
 │   ├── retrieval
 │   │   ├── vector_store.py      # Manages storage and retrieval of document embeddings
 │   │   └── retriever.py         # Fetches relevant documents based on user queries
 │   ├── llm
 │   │   ├── chain.py             # Orchestrates interaction with the language model
-│   │   └── prompt_templates.py   # Provides formatted prompt templates
-│   ├── interface
-│   │   └── cli.py               # Command-line interface for user interaction
-│   └── utils
-│       └── helpers.py           # Utility functions for various tasks
+│   |   └── prompt_templates.py  # Provides formatted prompt templates
+│   |────tests
+|   |       |
+│   |       |── test_ingestion.py
+            ├── test_llm.py
+|   |
+│   |───────__init__.py          # Orchestrates interaction with the language model
+|   |───────ingest.py
 ├── data
-│   └── documents                # Directory for storing custom documents
-├── requirements.txt             # Python dependencies for the project
-├── .env                         # Environment variables for configuration
-└── README.md                    # Documentation for the project
+│   |── documents                # Directory for storing custom documents
+|   |     └──Tinker v. Des Moines (8th Cir.).pdf   #Document pdf
+|   |
+|   |── vector_store
+|   |     └── 06f38c0e-1645-4d2e-93af-207912a919dd
+|   |          ├──data_level0.bin
+│   |          |──header.bin
+|   |          ├──length.bin
+│   |          └──link_lists.bin
+|   └────────────chroma.sqlite3
+├── .gitignore
+├──  poetry.lock
+├──  pyproject.toml
+|──  app.py                       # Main entry point of the application
+├──  requirements.txt             # Python dependencies for the project
+├──  .env                         # Environment variables for configuration
+└──  README.md                    # Documentation for the project
 
 ```
 
