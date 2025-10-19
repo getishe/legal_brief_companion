@@ -1,4 +1,4 @@
-# rag-assistant/README.md
+
 
 # RAG-Powered Assistant
 
