@@ -124,11 +124,13 @@ After running the application, you can interact with the assistant through the c
 - Config Management: Pydantic-based .env loader for reproducibility.
 
 🧪 Testing
+
 Basic unit tests are included under src/legal_brief_companion/tests/. Run with:
 
 pytest src/legal_brief_companion/tests/
 
 🛠️ Built With
+
 [LangChain](https://www.langchain.com/)
 
 [ChromaDB](https://www.chroma.com/)
@@ -139,8 +141,18 @@ pytest src/legal_brief_companion/tests/
 
 [Pydantic](https://pydantic-docs.helpmanual.io/)
 
+🔒 Security Notes
+
+Never commit your .env or API keys to GitHub.
+.gitignore is set up to exclude secrets and unnecessary files.
+
+🔒 License
+
+This project is licensed under the MIT License.
+
 📬 Contact
 Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
+
 For questions, contributions, or collaboration, feel free to reach out or open an issue.
 
 ## Contributions are welcome!
