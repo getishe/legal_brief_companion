@@ -71,10 +71,51 @@ pip install -r requirements.txt
 ```
 
 3. Set up your environment variables in the `.env` file.
+
+4. Run the application:
 ```
 
-GROQ_API_KEY=your_groq_key
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+python src/app.py
+
+```
+
+## Usage
+
+After running the application, you can interact with the assistant through the command-line interface. Provide your queries, and the assistant will respond based on the ingested documents.
+
+## Components
+
+- **Document Ingestion**: Load and preprocess documents for the assistant.
+- **Vector Store Retrieval**: Efficiently retrieve relevant documents using embeddings.
+- **LLM Interaction**: Generate responses using a language model.
+- **User Interface**: Simple CLI for user interaction.
+
+Feel free to explore the code and modify it to suit your needs!
+
+"& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI"
+
+power shell
+
+https://copilot.microsoft.com/shares/QERQyvTyiG3sZ654RACGW
+
+https://copilot.microsoft.com/shares/W2VehnXKzxn4urnFdubQC
+
+https://copilot.microsoft.com/shares/FPkRs3BoRB895WGwCFAKn
+
+https://copilot.microsoft.com/shares/A3xiSVePWTzHHoddNLRbU
+
+Project
+https://copilot.microsoft.com/shares/hqmWtuCsx6v4MrtBEYuNR
+https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
+https://pwskills.com/blog/how-to-develop-an-effective-ai-legal-assistant/
+
+https://copilot.microsoft.com/chats/REFhrMCUgFWzyxo5kPf7y
+
+https://copilot.microsoft.com/chats/bdEHjKkpzhKQ4oZyD4QgQ
+
+https://copilot.microsoft.com/chats/DcSDLVGWo5TV6B8uRziR4
+
+<!-- EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 LLM_PROVIDER=groq
 LLM_MODEL=llama-3.1-8b-instant
 DATABASE_URL=sqlite:///data/knowledge_base.db
@@ -86,6 +127,7 @@ VECTOR_STORE_TYPE=chroma
 debug = true
 
 ```
+
 4. Ingest your documents:
 
 ```
@@ -132,7 +174,6 @@ After running the application, you can interact with the assistant through the c
 
 - Config Management: Pydantic-based .env loader for reproducibility.
 
-
 🧪 Testing
 Basic unit tests are included under src/legal_brief_companion/tests/. Run with:
 
@@ -149,13 +190,15 @@ pytest src/legal_brief_companion/tests/
 
 [Pydantic](https://pydantic-docs.helpmanual.io/)
 
-
 📬 Contact
 Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
 For questions, contributions, or collaboration, feel free to reach out or open an issue.
 
 ## Contributions are welcome!
-  Please open issues or submit pull requests for improvements or bug fixes.
-  Please follow the existing code style and include tests for new features.
+
+Please open issues or submit pull requests for improvements or bug fixes.
+Please follow the existing code style and include tests for new features.
+
+```
 
 ```
