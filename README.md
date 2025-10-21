@@ -1,4 +1,4 @@
-# RAG-Powered Assistant - Legal Brief Companion
+# Legal Brief Companion - RAG-Powered Legal and Technical Assistant
 
 This project implements a modular Retrieval-Augmented Generation (RAG) assistant using LangChain, designed to answer legal and technical queries based on custom documents. It features document ingestion, semantic retrieval, prompt templating, and LLM-backed response generation—all wrapped in a clean CLI and Streamlit interface.
 
@@ -24,14 +24,16 @@ legal_brief_companion/
 │       │   └── cli.py                # CLI for local usage
 │       ├── utils/
 │       │   └── helpers.py            # Shared utilities and helpers
+│       └── tests/                        # Unit tests
+│       |     ├── test_chain.py
+│       |     ├── test_ingestion.py
+│       |     └── test_llm.py
 │       └── ingest.py                 # CLI/script entry for ingestion
 ├── data/
 │   ├── documents/                    # User documents (PDFs, txt)
 │   └── vector_store/                 # Persisted vector DB files
 │       └── <instance-id>/
-├── tests/
-│   ├── test_ingestion.py
-│   └── test_llm.py
+|
 ├── app.py                            # Streamlit / main app entry
 ├── pyproject.toml
 ├── requirements.txt
@@ -40,121 +42,102 @@ legal_brief_companion/
 └── README.md
 ```
 
-⚙️ Setup Instructions
+## ⚙️ Setup Instructions
 
-1. Clone the repository:
+1.  Clone the repository:
 
-```
+    ```bash
+    git clone <your_repository_url>
+    cd legal_brief_companion
+    ```
 
-git clone <repository-url>
-cd legal_brief_companion
+2.  Install the required dependencies:
 
-```
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-2. Install the required dependencies:
+3.  Set up your environment variables in the `.env` file. **Important:** Do not hardcode your API key directly in the `.env` file. Instead, set it as an environment variable in your system.
 
-```
+    ```
+    GROQ_API_KEY=your_groq_key
+    EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+    LLM_PROVIDER=groq
+    LLM_MODEL=llama3-8b-8192
+    DATABASE_URL=sqlite:///data/knowledge_base.db
+    DOCUMENTS_PATH=data/documents
+    PERSIST_DIRECTORY=data/vector_store
+    MODEL_NAME=llama3-8b-8192
+    VECTOR_STORE_TYPE=chroma
 
-pip install -r requirements.txt
+    debug = true
+    ```
 
-```
+4.  Set your Groq API key as an environment variable:
 
-3. Set up your environment variables in the `.env` file.
+    ```bash
+    # PowerShell
+    $env:GROQ_API_KEY="your_api_key_here"
 
-```
+    # Linux/macOS
+    export GROQ_API_KEY="your_api_key_here"
+    ```
 
-GROQ_API_KEY=your_groq_key
-EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-LLM_PROVIDER=groq
-LLM_MODEL=llama-3.1-8b-instant
-DATABASE_URL=sqlite:///data/knowledge_base.db
-DOCUMENTS_PATH=data/documents
-PERSIST_DIRECTORY=data/vector_store
-MODEL_NAME=llama3-8b-8192
-VECTOR_STORE_TYPE=chroma
+5.  Ingest your documents: This process will create the vector store.
 
-debug = true
+    ```bash
+    python src/legal_brief_companion/ingest.py
+    ```
 
-```
+6.  Run the application:
 
-4. Ingest your documents:
+    ```bash
+    streamlit run app.py
+    ```
 
-```
+## 🧑‍⚖️ Usage
 
-python run python src/legal_brief_companion/ingest.py
+After running the application, you can interact with the assistant through the command-line interface or the Streamlit interface. Provide your queries, and the assistant will respond based on the ingested documents.
 
-```
+## 🧩 Components
 
-5. Ensure the vector store is created in the `data/vector_store` directory.
+- **Document Ingestion:** Load and chunk legal PDFs or text files using `document_loader.py` and `text_splitter.py`.
+- **Vector Store Retrieval:** Embed and retrieve relevant chunks using ChromaDB, managed by `vector_store.py` and `retriever.py`.
+- **LLM Interaction:** Generate answers using Groq-hosted LLaMA models, orchestrated by `chain.py`.
+- **Prompt Templates:** Modular prompts for transparent reasoning, defined in `prompt_templates.py`.
+- **User Interface:** Streamlit frontend (`app.py`) and CLI (`cli.py`) for flexible interaction.
+- **Config Management:** Pydantic-based `.env` loader for reproducibility via `settings.py`.
 
-6. set your Groq Api key in the .env file
+## 🧪 Testing
 
-```
+Basic unit tests are included under `src/legal_brief_companion/tests/`. Run with:
 
-GROQ_API_KEY=your_api_key_here #power shell
-
-export GROQ_API_KEY=your_api_key_here #linux/mac
-
-```
-
-7. Run the application:
-
-```
-
-python run streamlit run app.py
-
-```
-
-🧑‍⚖️ Usage
-
-After running the application, you can interact with the assistant through the command-line interface. Provide your queries, and the assistant will respond based on the ingested documents.
-
-🧩 Components
-
-- Document Ingestion: Load and chunk legal PDFs or text files.
-
-- Vector Store Retrieval: Embed and retrieve relevant chunks using ChromaDB.
-
-- LLM Interaction: Generate answers using Groq-hosted LLaMA models.
-
-- Prompt Templates: Modular prompts for teachable, transparent reasoning.
-
-- User Interface: Streamlit frontend and CLI for flexible interaction.
-
-- Config Management: Pydantic-based .env loader for reproducibility.
-
-🧪 Testing
-
-Basic unit tests are included under src/legal_brief_companion/tests/. Run with:
-
+```bash
 pytest src/legal_brief_companion/tests/
+```
 
-🛠️ Built With
+## 🛠️ Built With
 
-[LangChain](https://www.langchain.com/)
+- [LangChain](https://www.langchain.com/)
+- [ChromaDB](https://www.chroma.com/)
+- [Groq](https://www.groq.com/)
+- [Streamlit](https://streamlit.io/)
+- [Pydantic](https://pydantic-docs.helpmanual.io/)
 
-[ChromaDB](https://www.chroma.com/)
+## 🔒 Security Notes
 
-[Groq](https://www.groq.com/)
+Never commit your `.env` file or API keys to GitHub. The `.gitignore` file is set up to exclude secrets and unnecessary files.
 
-[Streamlit](https://streamlit.io/)
-
-[Pydantic](https://pydantic-docs.helpmanual.io/)
-
-🔒 Security Notes
-
-Never commit your .env or API keys to GitHub.
-.gitignore is set up to exclude secrets and unnecessary files.
-
-🔒 License
+## 🔒 License
 
 This project is licensed under the MIT License.
 
-📬 Contact
+## 📬 Contact
+
 Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
 
 For questions, contributions, or collaboration, feel free to reach out or open an issue.
 
 ## Contributions are welcome!
 
-Please open issues or submit pull requests for improvements or bug and follow the existing code style and include tests for new features.
+Please open issues or submit pull requests for improvements or bug fixes. Follow the existing code style and include tests for new features.
