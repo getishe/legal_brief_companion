@@ -42,6 +42,14 @@ legal_brief_companion/
 └── README.md
 ```
 
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9+
+- Groq API key
+- pip or poetry
+
 ## ⚙️ Setup Instructions
 
 1.  Clone the repository:
@@ -136,7 +144,8 @@ This project is licensed under the MIT License.
 
 Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
 
-For questions, contributions, or collaboration, feel free to reach out or open an issue.
+- Email: [getahune.alemayhu@gmail.com]
+  For questions, contributions, or collaboration, feel free to reach out or open an issue.
 
 ## Contributions are welcome!
 
