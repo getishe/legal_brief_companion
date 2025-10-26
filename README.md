@@ -116,6 +116,26 @@ After running the application, you can interact with the assistant through the c
 - **User Interface:** Streamlit frontend (`app.py`) and CLI (`cli.py`) for flexible interaction.
 - **Config Management:** Pydantic-based `.env` loader for reproducibility via `settings.py`.
 
+## 🧩 Core Components
+
+### Document Processing
+
+- PDF and text file ingestion
+- Intelligent document chunking
+- Semantic embedding generation
+
+### Retrieval System
+
+- ChromaDB vector store integration
+- Similarity-based chunk retrieval
+- Context ranking and selection
+
+### LLM Integration
+
+- Groq-hosted LLaMA models
+- Structured prompt engineering
+- Response chain orchestration
+
 ## 🧪 Testing
 
 Basic unit tests are included under `src/legal_brief_companion/tests/`. Run with:
@@ -134,7 +154,10 @@ pytest src/legal_brief_companion/tests/
 
 ## 🔒 Security Notes
 
-Never commit your `.env` file or API keys to GitHub. The `.gitignore` file is set up to exclude secrets and unnecessary files.
+- Never commit your `.env` file or API keys to GitHub. The `.gitignore` file is set up to exclude secrets and unnecessary files.
+- Use environment variables for secrets
+- Follow security best practices
+- Regular dependency updates
 
 ## 🔒 License
 
