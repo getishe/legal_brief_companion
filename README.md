@@ -172,4 +172,4 @@ Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
 
 ## Contributions are welcome!
 
-Please open issues or submit pull requests for improvements or bug fixes. Follow the existing code style and include tests for new features.
+Please open issues or submit pull requests for improvements or bug fixes. Follow the existing code style and include tests for new features and suggestions.
