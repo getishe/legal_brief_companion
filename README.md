@@ -2,7 +2,7 @@
 
 This project implements a modular Retrieval-Augmented Generation (RAG) assistant using LangChain, designed to answer legal and technical queries based on custom documents. It features document ingestion, semantic retrieval, prompt templating, and LLM-backed response generation—all wrapped in a clean CLI and Streamlit interface.
 
-## Project Structure
+## Project Structure as follows
 
 ```text
 legal_brief_companion/
