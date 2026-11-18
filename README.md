@@ -91,7 +91,7 @@ legal_brief_companion/
     export GROQ_API_KEY="your_api_key_here"
     ```
 
-5.  Ingest your documents: This process will create the vector store.
+5.  Ingest your documents: This process splits and indexes the documents in the vector store.
 
     ```bash
     python src/legal_brief_companion/ingest.py
@@ -138,10 +138,10 @@ After running the application, you can interact with the assistant through the c
 
 ## 🧪 Testing
 
-Basic unit tests are included under `src/legal_brief_companion/tests/`. Run with:
+Unit tests are included under `src/legal_brief_companion/tests/`. Run with:
 
 ```bash
-pytest src/legal_brief_companion/tests/
+PYTHONPATH=src pytest -q src/legal_brief_companion/tests/
 ```
 
 ## 🛠️ Built With
