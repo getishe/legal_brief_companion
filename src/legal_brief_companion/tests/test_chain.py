@@ -1,15 +1,8 @@
-from legal_brief_companion.llm.chain import build_chain
+import pytest
 
-query = "Summarize the ruling in Tinker v. Des Moines"
-chain, docs = build_chain(query_type="student speech rights")
+from legal_brief_companion.llm.prompt_templates import get_prompt_template
 
-output = chain.invoke({"query": query})
-response = output["result"]
 
-print("\n🧠 Chain Response:\n", response)
-
-print("\n📄 Source Pages:")
-for doc in output["source_documents"]:
-    page = doc.metadata.get("page_label", doc.metadata.get("page"))
-    print(f"- {doc.metadata['source']}, page {page}")
-# poetry run python src/legal_brief_companion/tests/test_chain.py
+def test_prompts_reject_unknown_type_before_chain_creation():
+    with pytest.raises(ValueError):
+        get_prompt_template("unsupported")
