@@ -4,6 +4,29 @@ from legal_brief_companion.config.settings import settings
 def load_documents():
     documents = []
     doc_path = settings.DOCUMENT_DIR
+    known_metadata = {
+        "Tinker v. Des Moines": {
+            "jurisdiction": "8th Circuit",
+            "case": "Tinker v. Des Moines",
+            "year": 1969,
+        }
+    }
+
+    def add_metadata(docs, file):
+        name = file.stem
+        metadata = (
+            known_metadata["Tinker v. Des Moines"]
+            if "Tinker v. Des Moines" in name
+            else {}
+        )
+        for doc in docs:
+            doc.metadata.update({
+                "source": str(file),
+                "jurisdiction": metadata.get("jurisdiction", "Not specified"),
+                "case": metadata.get("case", name),
+                "year": metadata.get("year"),
+            })
+            documents.append(doc)
 
     if doc_path.is_dir():
         for file in doc_path.iterdir():
@@ -19,15 +42,7 @@ def load_documents():
                 print(f"⚠️ Skipping unsupported file: {file.name}")
                 continue
 
-            # ✅ Add metadata to each document
-            for doc in docs:
-                doc.metadata.update({
-                    "source": str(file),
-                    "jurisdiction": "8th Circuit",
-                    "case": "Tinker v. Des Moines",
-                    "year": 1969
-                })
-                documents.append(doc)
+            add_metadata(docs, file)
 
     elif doc_path.is_file():
         if doc_path.suffix.lower() == ".txt":
@@ -41,15 +56,7 @@ def load_documents():
         else:
             raise ValueError("Unsupported file type. Only .txt and .pdf are supported.")
 
-        # ✅ Add metadata to each document
-        for doc in docs:
-            doc.metadata.update({
-                "source": str(doc_path),
-                "jurisdiction": "8th Circuit",
-                "case": "Tinker v. Des Moines",
-                "year": 1969
-            })
-            documents.append(doc)
+        add_metadata(docs, doc_path)
 
     else:
         raise ValueError(f"DOCUMENT_DIR must be a valid file or directory path. Got: {doc_path}")

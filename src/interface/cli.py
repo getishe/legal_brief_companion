@@ -1,10 +1,15 @@
 import json
+import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 import typer
 from ingestion.document_loader import load_documents
 from ingestion.text_splitter import split_documents 
-from retrieval.vector_store import build_vector_store
-from llm.chain import build_chain
-from config import settings
+from legal_brief_companion.retrieval.vector_store import build_vector_store
+from legal_brief_companion.llm.chain import build_chain
+from legal_brief_companion.config.settings import settings
 from typing import Optional
 app = typer.Typer()
 
@@ -32,7 +37,6 @@ def reset():
     Delete the existing vector store to start fresh.
     """
     import shutil
-    from config import settings  # Adjust if your settings are elsewhere
 
     try:
         shutil.rmtree(settings.VECTOR_STORE_PATH, ignore_errors=True)
@@ -46,7 +50,6 @@ def status():
     Show current vector store status.
     """
     from pathlib import Path
-    from config import settings  # Adjust if needed
 
     vector_path = Path(settings.VECTOR_STORE_PATH)
     if not vector_path.exists():
@@ -61,7 +64,7 @@ def status():
 @app.command()
 def query(
     query: str,
-    query_type: str = "default",
+    query_type: str = "question",
     fast: bool = False,
     show_sources: bool = False,
     max_chars: int = 300,
@@ -81,7 +84,8 @@ def query(
     Use --fast for quicker responses.
     Use --show-sources to display retrieved documents.
     """
-    filters = {"year": 1969} if "Tinker" in query else None
+    if filters is None and "Tinker" in query:
+        filters = {"case": "Tinker v. Des Moines"}
 
     if fast:
         settings.LLM_MODEL = "llama-3.1-8b-instant"
