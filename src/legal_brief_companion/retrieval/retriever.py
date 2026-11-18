@@ -20,7 +20,7 @@ def get_retriever(filters: dict = None, max_chunks: int = 4):
 
     search_kwargs = {"k": max_chunks}
     if filters:
-        search_kwargs["filter"] = {"where": filters}
+        search_kwargs["filter"] = filters
 
     return vector_store.as_retriever(search_kwargs=search_kwargs)
 
