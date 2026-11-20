@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     LLM_PROVIDER: str = "groq"
     DATABASE_URL: str = "sqlite:///data/knowledge_base.db"
-    LLM_MODEL: str = "llama-3.1-8b-instant"
+    LLM_MODEL: str = "openai/gpt-oss-20b"
     
     API_KEY: Optional[str] = None
     MODEL_NAME: Optional[str] = None
