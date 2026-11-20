@@ -1,185 +1,120 @@
-# Legal Brief Companion - RAG-Powered Legal and Technical Assistant
+# Legal Brief Companion
 
-This project implements a modular Retrieval-Augmented Generation (RAG) assistant using LangChain, designed to answer legal and technical queries based on custom documents. It features document ingestion, semantic retrieval, prompt templating, and LLM-backed response generation—all wrapped in a clean CLI and Streamlit interface.
+Legal Brief Companion lets a user upload one case-related PDF or text document and chat with its contents. The Streamlit app extracts and indexes the document, answers questions from relevant passages, and can summarize the full document with page references.
 
-## Project Structure as follows
+The app provides legal research assistance only. Verify the source document, citations, and conclusions with a qualified attorney.
 
-```text
-legal_brief_companion/
-├── src/
-│   └── legal_brief_companion/
-│       ├── __init__.py
-│       ├── config/
-│       │   └── settings.py           # Application configuration and env loading
-│       ├── ingestion/
-│       │   ├── document_loader.py    # Load PDFs/texts into the pipeline
-│       │   └── text_splitter.py      # Chunk large documents
-│       ├── retrieval/
-│       │   ├── vector_store.py       # Manage vector store persistence (Chroma)
-│       │   └── retriever.py          # Query and rank relevant chunks
-│       ├── llm/
-│       │   ├── chain.py              # LLM orchestration and chains
-│       │   └── prompt_templates.py   # Reusable prompt templates
-│       ├── interface/
-│       │   └── cli.py                # CLI for local usage
-│       ├── utils/
-│       │   └── helpers.py            # Shared utilities and helpers
-│       └── tests/                        # Unit tests
-│       |     ├── test_chain.py
-│       |     ├── test_ingestion.py
-│       |     └── test_llm.py
-│       └── ingest.py                 # CLI/script entry for ingestion
-├── data/
-│   ├── documents/                    # User documents (PDFs, txt)
-│   └── vector_store/                 # Persisted vector DB files
-│       └── <instance-id>/
-|
-├── app.py                            # Streamlit / main app entry
-├── pyproject.toml
-├── requirements.txt
-├── .env
-├── .gitignore
-└── README.md
+**Live app:** [legalbriefcompanion.streamlit.app](https://legalbriefcompanion.streamlit.app/)
+
+## Requirements
+
+- Python 3.11 or newer
+- A Groq API key
+- Tesseract OCR with English language data for scanned PDFs
+
+## Install and run
+
+1. Install Python dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+   If you use Poetry, regenerate the lockfile after adding dependencies with `poetry lock`, then install with `poetry install`.
+
+2. Set the Groq API key in your environment:
+
+   **Linux/macOS**
+
+   ```bash
+   export GROQ_API_KEY="your_groq_api_key"
+   ```
+
+   **PowerShell**
+
+   ```powershell
+   $env:GROQ_API_KEY="your_groq_api_key"
+   ```
+
+   Optional settings include:
+
+   ```env
+   EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+   LLM_MODEL=openai/gpt-oss-20b
+   PERSIST_DIRECTORY=data/vector_store
+   DOCUMENTS_PATH=data/documents
+   ```
+
+3. Start the app:
+
+   ```bash
+   streamlit run app.py
+   ```
+
+4. Upload one PDF or TXT file, select **Index document**, then ask questions in the chat.
+
+The app offers `openai/gpt-oss-20b` and `openai/gpt-oss-120b` through Groq. The response-length control is an output ceiling, with a 1,024-token default; increase it for longer answers. The app prompts for concise, source-grounded responses.
+
+## Document handling
+
+- A single PDF or TXT file up to 50 MB can be uploaded at a time. A new indexed upload replaces the active document and clears its chat.
+- PDF citations use one-based page numbers. Text files have no page numbers, so their source trail identifies the file.
+- Question, argument, and citation modes retrieve the four most relevant sections.
+- **Summary** mode processes every extracted section in bounded batches, then combines the results. It describes the type of document it actually receives instead of assuming every upload is a court opinion. Progress is shown during summarization.
+- Scanned PDF pages with no extractable text are processed with PyMuPDF OCR. PyMuPDF is a Python dependency; Tesseract is a separate system package. On Debian/Ubuntu, install it with:
+
+  ```bash
+  sudo apt install tesseract-ocr tesseract-ocr-eng
+  ```
+
+  OCR currently uses English. Digital PDFs do not require Tesseract.
+
+## Chat export and saved sessions
+
+Use **Export chat with citations (JSON)** to download the conversation and source passages/page references.
+
+By default, uploads are kept for the active Streamlit session and are not added to the shared vector store. The optional **Remember this document and chat after refresh** setting stores the original upload and chat under `data/saved_sessions/` on the app server. The page URL grants access to that saved session. Enable this only on a trusted, private deployment, do not share the URL, and use **Clear current document and chat** to remove the saved files. The saved-session directory is excluded from Git.
+
+## Existing command-line ingestion
+
+The repository also includes a CLI for indexing files from `DOCUMENTS_PATH` into the persistent Chroma store:
+
+```bash
+PYTHONPATH=src python src/interface/cli.py ingest
+PYTHONPATH=src python src/interface/cli.py query "What does the document say about the issue?"
 ```
 
-## 🚀 Quick Start
+The Streamlit upload flow does not require CLI ingestion.
 
-### Prerequisites
+## Project layout
 
-- Python 3.9+
-- Groq API key
-- pip or poetry
+```text
+app.py                                  Streamlit upload and chat interface
+src/ingestion/                          Document loading and text splitting
+src/interface/cli.py                    CLI ingestion and query commands
+src/legal_brief_companion/config/       Settings and logging
+src/legal_brief_companion/llm/          Retrieval chain, whole-document summary, prompts
+src/legal_brief_companion/retrieval/    Chroma vector-store helpers
+src/legal_brief_companion/session_store.py  Opt-in local session persistence
+src/legal_brief_companion/tests/        Unit tests
+data/documents/                         Optional CLI source documents
+data/vector_store/                      Persistent CLI vector store
+data/saved_sessions/                    Opt-in saved uploads and chats (Git-ignored)
+```
 
-## ⚙️ Setup Instructions
-
-1.  Clone the repository:
-
-    ```bash
-    git clone <your_repository_url>
-    cd legal_brief_companion
-    ```
-
-2.  Install the required dependencies:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-3.  Set up your environment variables in the `.env` file. **Important:** Do not hardcode your API key directly in the `.env` file. Instead, set it as an environment variable in your system.
-
-    ```
-    GROQ_API_KEY=your_groq_key
-    EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
-    LLM_PROVIDER=groq
-    LLM_MODEL=openai/gpt-oss-20b
-    DATABASE_URL=sqlite:///data/knowledge_base.db
-    DOCUMENTS_PATH=data/documents
-    PERSIST_DIRECTORY=data/vector_store
-    MODEL_NAME=openai/gpt-oss-20b
-    VECTOR_STORE_TYPE=chroma
-
-    debug = true
-    ```
-
-4.  Set your Groq API key as an environment variable:
-
-    ```bash
-    # PowerShell
-    $env:GROQ_API_KEY="your_api_key_here"
-
-    # Linux/macOS
-    export GROQ_API_KEY="your_api_key_here"
-    ```
-
-5.  Ingest your documents: This process splits and indexes the documents in the vector store.
-
-    ```bash
-    python src/legal_brief_companion/ingest.py
-    ```
-
-6.  Run the application:
-
-    ```bash
-    streamlit run app.py
-    ```
-
-### Uploads, OCR, and saved chats
-
-- Upload one PDF or TXT file in the app (up to 50 MB). The app indexes it for the current session and uses its page text as the source for answers.
-- Summary mode processes every extracted section in bounded batches, then combines the partial summaries with source page references. Question and argument modes continue to retrieve only the most relevant sections.
-- Scanned PDF pages are read with PyMuPDF OCR. Install the Tesseract OCR engine and English language data on the machine running Streamlit; digital PDFs do not need Tesseract.
-- Uploads are retained only for the active session unless **Remember this document and chat after refresh** is selected. When selected, the document and transcript are stored under `data/saved_sessions/` on the app server until the user clears them. The URL contains access to that saved session. Enable this only on a trusted, private deployment; do not share the URL or use this on a shared server without authentication and a data-retention policy.
-- Users can export the conversation and source page references as JSON.
-
-On Debian/Ubuntu, install the OCR engine with `sudo apt install tesseract-ocr tesseract-ocr-eng`. PyMuPDF is installed from the Python dependencies; Tesseract is a separate system package.
-
-## 🧑‍⚖️ Usage
-
-After running the application, you can interact with the assistant through the command-line interface or the Streamlit interface. Provide your queries, and the assistant will respond based on the ingested documents.
-
-## 🧩 Components
-
-- **Document Ingestion:** Load and chunk legal PDFs or text files using `document_loader.py` and `text_splitter.py`.
-- **Vector Store Retrieval:** Embed and retrieve relevant chunks using ChromaDB, managed by `vector_store.py` and `retriever.py`.
-- **LLM Interaction:** Generate answers using Groq-hosted LLaMA models, orchestrated by `chain.py`.
-- **Prompt Templates:** Modular prompts for transparent reasoning, defined in `prompt_templates.py`.
-- **User Interface:** Streamlit frontend (`app.py`) and CLI (`cli.py`) for flexible interaction.
-- **Config Management:** Pydantic-based `.env` loader for reproducibility via `settings.py`.
-
-## 🧩 Core Components
-
-### Document Processing
-
-- PDF and text file ingestion
-- Intelligent document chunking
-- Semantic embedding generation
-
-### Retrieval System
-
-- ChromaDB vector store integration
-- Similarity-based chunk retrieval
-- Context ranking and selection
-
-### LLM Integration
-
-- Groq-hosted LLaMA models
-- Structured prompt engineering
-- Response chain orchestration
-
-## 🧪 Testing
-
-Unit tests are included under `src/legal_brief_companion/tests/`. Run with:
+## Tests
 
 ```bash
 PYTHONPATH=src pytest -q src/legal_brief_companion/tests/
 ```
 
-## 🛠️ Built With
+## Security and privacy
 
-- [LangChain](https://www.langchain.com/)
-- [ChromaDB](https://www.chroma.com/)
-- [Groq](https://www.groq.com/)
-- [Streamlit](https://streamlit.io/)
-- [Pydantic](https://pydantic-docs.helpmanual.io/)
+- Keep API keys out of source control. The `.env` file is Git-ignored; environment variables are recommended for secrets.
+- Uploaded documents are sent to the configured Groq service as context for generation. Review the provider’s data handling terms before uploading sensitive case files.
+- Saved sessions are stored on the machine running the app. Do not enable persistence on a shared or public deployment without authentication, access controls, and a retention policy.
+- Generated answers may be incomplete or incorrect. Confirm legal authorities and page citations against the original document.
 
-## 🔒 Security Notes
+## License
 
-- Never commit your `.env` file or API keys to GitHub. The `.gitignore` file is set up to exclude secrets and unnecessary files.
-- Use environment variables for secrets
-- Follow security best practices
-- Regular dependency updates
-
-## 🔒 License
-
-This project is licensed under the MIT License.
-
-## 📬 Contact
-
-Built by [Getahune Wondemenhu Alemayhu](https://www.github.com/getishe).
-
-- Email: [getahune.alemayhu@gmail.com]
-  For questions, contributions, or collaboration, feel free to reach out or open an issue.
-
-## Contributions are welcome!
-
-Please open issues or submit pull requests for improvements or bug fixes. Follow the existing code style and include tests for new features and suggestions.
+MIT. See [LICENSE](LICENSE).
