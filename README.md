@@ -71,11 +71,11 @@ legal_brief_companion/
     GROQ_API_KEY=your_groq_key
     EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
     LLM_PROVIDER=groq
-    LLM_MODEL=llama3-8b-8192
+    LLM_MODEL=openai/gpt-oss-20b
     DATABASE_URL=sqlite:///data/knowledge_base.db
     DOCUMENTS_PATH=data/documents
     PERSIST_DIRECTORY=data/vector_store
-    MODEL_NAME=llama3-8b-8192
+    MODEL_NAME=openai/gpt-oss-20b
     VECTOR_STORE_TYPE=chroma
 
     debug = true
@@ -102,6 +102,16 @@ legal_brief_companion/
     ```bash
     streamlit run app.py
     ```
+
+### Uploads, OCR, and saved chats
+
+- Upload one PDF or TXT file in the app (up to 50 MB). The app indexes it for the current session and uses its page text as the source for answers.
+- Summary mode processes every extracted section in bounded batches, then combines the partial summaries with source page references. Question and argument modes continue to retrieve only the most relevant sections.
+- Scanned PDF pages are read with PyMuPDF OCR. Install the Tesseract OCR engine and English language data on the machine running Streamlit; digital PDFs do not need Tesseract.
+- Uploads are retained only for the active session unless **Remember this document and chat after refresh** is selected. When selected, the document and transcript are stored under `data/saved_sessions/` on the app server until the user clears them. The URL contains access to that saved session. Enable this only on a trusted, private deployment; do not share the URL or use this on a shared server without authentication and a data-retention policy.
+- Users can export the conversation and source page references as JSON.
+
+On Debian/Ubuntu, install the OCR engine with `sudo apt install tesseract-ocr tesseract-ocr-eng`. PyMuPDF is installed from the Python dependencies; Tesseract is a separate system package.
 
 ## 🧑‍⚖️ Usage
 
