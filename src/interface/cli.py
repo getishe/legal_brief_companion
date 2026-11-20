@@ -88,7 +88,7 @@ def query(
         filters = {"case": "Tinker v. Des Moines"}
 
     if fast:
-        settings.LLM_MODEL = "llama-3.1-8b-instant"
+        settings.LLM_MODEL = "openai/gpt-oss-20b"
         chain = build_chain(query_type, filters=filters, max_chunks=2)
     else:
         chain = build_chain(query_type, filters=filters)
