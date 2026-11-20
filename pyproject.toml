@@ -15,6 +15,7 @@ keywords = ["legal", "AI", "assistant", "briefs", "summarization", "analysis"]
 python = "^3.11"
 groq = "^0.30"  # Replace with actual version if available
 pypdf = "^3.17.0"
+pymupdf = "^1.26.4"
 python-dotenv = "^1.0.0"
 pydantic = "^2.11.9"
 pydantic-settings = "^2.11.0"
