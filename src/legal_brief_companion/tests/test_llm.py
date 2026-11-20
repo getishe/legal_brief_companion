@@ -10,7 +10,7 @@ from legal_brief_companion.llm.prompt_templates import get_prompt_template
 def test_supported_prompt_types(query_type):
     prompt = get_prompt_template(query_type)
     assert "{context}" in prompt.template
-    assert "{query}" in prompt.template
+    assert "{question}" in prompt.template
 
 
 def test_unknown_prompt_type_is_rejected():
